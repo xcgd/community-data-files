@@ -10,13 +10,10 @@
     "author": "Numérigraphe SARL, Sistheo, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/community-data-files",
     "category": "Localization",
+    "depends": ["partner_industry_secondary"],
     "data": [
-        "data/res.partner.nace.csv",
-        "security/res_partner_nace.xml",
-        "views/res_partner.xml",
-        "views/res_partner_nace.xml",
+        "data/res.partner.industry.csv",
     ],
-    "depends": ["contacts"],
     "installable": True,
     "license": "AGPL-3",
 }

@@ -7,59 +7,20 @@ from odoo.tests.common import TransactionCase
 class TestResPartnerNace(TransactionCase):
     def setUp(self):
         super(TestResPartnerNace, self).setUp()
-        self.nace = self.env["res.partner.nace"].create(
+        self.nace = self.env["res.partner.industry"].create(
             {"name": "nace_test", "code": "code_nace"}
         )
-        self.child_nace = self.env["res.partner.nace"].create(
+        self.child_nace = self.env["res.partner.industry"].create(
             {
                 "name": "nace_child",
                 "code": "code_child",
                 "parent_id": self.nace.id,
             }
         )
+        self.child_copy = self.child_nace.copy()
 
-    def test_complete_name_1(self):
-        self.assertEqual(self.nace.name, "nace_test")
-        self.assertEqual(self.nace.complete_name, "[code_nace] nace_test")
-        self.assertEqual(
-            self.child_nace.complete_name,
-            "[code_child] nace_child",
-        )
+    def test_01_check_copy(self):
+        self.assertEqual(self.child_copy.name, "nace_child 2")
 
-    def test_complete_name_2(self):
-        self.assertEqual(
-            self.child_nace.with_context(nace_display="long").complete_name,
-            "[code_nace] nace_test / [code_child] nace_child",
-        )
-
-    def test_name_search(self):
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("code_nace"),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("nace_test"),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search(
-                "code_nace", args=[("id", "=", self.nace.id)]
-            ),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("ode_nac"),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("ace_te"),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("nace_test", operator="="),
-        )
-        self.assertEqual(
-            self.nace.name_get(),
-            self.env["res.partner.nace"].name_search("code_nace", operator="="),
-        )
+    def test_02_check_uniq_code(self):
+        self.assertNotEqual(self.child_copy.code, self.child_nace.code)

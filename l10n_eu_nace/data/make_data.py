@@ -42,10 +42,10 @@ LANGS = [
 ID_TEMPLATE = "nace_%s"
 
 _logger.info("Generating the English CSV file...")
-src = csv.reader(open("../examples/NACE_REV2_en.csv", "rU"))
+src = csv.reader(open("../examples/NACE_REV2_en.csv", "r"))
 dest = csv.writer(open("res.partner.nace.csv", "w"), quoting=csv.QUOTE_ALL)
 # Write the file header
-dest.writerow(["id", "parent_id:id", "code", "name"])
+dest.writerow(["id", "parent_id:id", "code", "name", "full_name"])
 # Write the root category
 parent_ids = {0: ID_TEMPLATE % "root"}
 dest.writerow([parent_ids[0], "", "", "NACE"])
@@ -69,7 +69,7 @@ _logger.info("Done.\n")
 for lang in LANGS:
     filename = lang != "en" and ("%s.po" % lang) or "l10n_eu_nace.pot"
     _logger.info("Generating %s..." % filename)
-    src = csv.reader(open("../examples/NACE_REV2_%s.csv" % lang, "rU"))
+    src = csv.reader(open("../examples/NACE_REV2_%s.csv" % lang, "r"))
     # Skip first line
     next(src)
     # Write file header
@@ -99,7 +99,7 @@ msgstr ""
         xml_id = ID_TEMPLATE % row[1].replace(".", "_")
         dest.write(
             """#. module: l10n_eu_nace
-#: model:res.partner.nace,name:l10n_eu_nace.%s
+#: model:res.partner.industry,name:l10n_eu_nace.%s
 msgid "%s"
 msgstr "%s"
 

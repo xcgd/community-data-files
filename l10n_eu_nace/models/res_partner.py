@@ -8,9 +8,5 @@ class ResPartner(models.Model):
 
     _inherit = "res.partner"
 
-    nace_id = fields.Many2one(
-        comodel_name="res.partner.nace", string="Main NACE", index=True
-    )
-    secondary_nace_ids = fields.Many2many(
-        comodel_name="res.partner.nace", string="Secondary NACE"
-    )
+    industry_id = fields.Many2one(string="Main NACE", index=True)
+    secondary_industry_ids = fields.Many2many(string="Secondary NACE")
